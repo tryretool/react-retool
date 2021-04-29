@@ -2,6 +2,10 @@
   "name": "react-retool",
   "version": "0.1.1",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tryretool/react-retool.git"
+  },
   "babel": {
     "presets": [
       "@babel/preset-react"

@@ -4,6 +4,9 @@ import './retool.css';
 class Retool extends React.Component {
     constructor(props) {
         super(props);
+        
+        if (!this.props.url) throw new Error('Please pass a url into the Retool component.')
+        
         this.state = {
             url: props.url,
             elementWatchers: {}
@@ -16,7 +19,9 @@ class Retool extends React.Component {
     }
 
     startListening = () => {
-        window.addEventListener('message', (e) => this.handle(e) );
+        if (this.iframe) {
+            window.addEventListener('message', (e) => this.handle(e) );
+        }
     }
 
     startWatchers = () => {
@@ -96,15 +101,15 @@ class Retool extends React.Component {
 
     render() {
         return (
-            <iframe 
-                frameBorder="none" 
-                src={this.state.url}
-                ref = {e => {
-                    this.iframe = e
-                }}
-            >
-            </iframe>
-        );
+                <iframe 
+                    frameBorder="none" 
+                    src={this.state.url}
+                    ref = {e => {
+                        this.iframe = e
+                    }}
+                >
+                </iframe>
+            );
     }
 }
   

@@ -52,9 +52,11 @@ var Retool = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "startListening", function () {
-      window.addEventListener('message', function (e) {
-        return _this.handle(e);
-      });
+      if (_this.iframe) {
+        window.addEventListener('message', function (e) {
+          return _this.handle(e);
+        });
+      }
     });
 
     _defineProperty(_assertThisInitialized(_this), "startWatchers", function () {
@@ -131,6 +133,7 @@ var Retool = /*#__PURE__*/function (_React$Component) {
       }
     });
 
+    if (!_this.props.url) throw new Error('Please pass a url into the Retool component.');
     _this.state = {
       url: props.url,
       elementWatchers: {}

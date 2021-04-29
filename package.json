@@ -1,7 +1,17 @@
 {
   "name": "react-retool",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ],
+    "plugins": [
+        [
+          "@babel/plugin-proposal-class-properties"
+        ]
+    ]
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -15,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "publish:npm": "rm -rf dist && mkdir dist &&  babel src/components -d dist --copy-files"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +45,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-react": "^7.13.13"
   }
 }

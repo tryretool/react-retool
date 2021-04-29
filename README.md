@@ -21,7 +21,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `yarn publish:npm`
 
-Builds the project in the `/dist` directory & publishes with to npm. 
+Builds the project in the `/dist` directory. Publish to npm with `npm publish`.
 
 ## Install
 

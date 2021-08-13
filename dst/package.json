@@ -1,6 +1,6 @@
 {
   "name": "react-retool",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": false,
   "repository": {
     "type": "git",
@@ -38,7 +38,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "publish:npm": "rm -rf dst && mkdir dst && babel src/components -d dst --copy-files && mv ./dst/Retool.js ./dst/index.js && cp ./package.json ./dst/package.json"
+    "publish:npm": "rm -rf dst && mkdir dst && babel src/components -d dst --copy-files && mv ./dst/Retool.js ./dst/index.js && cp ./package.json ./dst/package.json && cp ./README.md ./dst/README.md"
   },
   "eslintConfig": {
     "extends": [

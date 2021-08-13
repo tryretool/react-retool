@@ -49,11 +49,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
+## Publishing
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn publish:npm`
-
-Builds the project in the `/dist` directory. Publish to npm with `npm publish`.
+1. Bump version with `npm version [major|minor|patch]`
+2. Run `yarn publish:npm`. This will build the project in the `/dst` directory. 
+3. Navigate to `/dst` directory.
+4. Publish to npm with `npm publish`

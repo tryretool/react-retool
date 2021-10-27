@@ -56,3 +56,7 @@ You will also see any lint errors in the console.
 2. Run `yarn publish:npm`. This will build the project in the `/dst` directory.
 3. Navigate to `/dst` directory.
 4. Publish to npm with `npm publish`
+
+## Support
+
+Need help? Please report issues or requests to support@retool.com, through in app chat, or on https://community.retool.com/

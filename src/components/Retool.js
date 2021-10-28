@@ -1,84 +1,62 @@
-import React from "react"
+import React, { useEffect, useRef, useState } from "react";
 
-class Retool extends React.Component {
-  constructor(props) {
-    super(props)
+const Retool = ({ data, url }) => {
+  const embeddedIframe = useRef(null);
+  const [elementWatchers, setElementWatchers] = useState({});
 
-    if (!this.props.url)
-      throw new Error("Please pass a url into the Retool component.")
-
-    this.state = {
-      url: props.url,
-      elementWatchers: {},
-      parentData: this.props.data || {},
+  useEffect(() => {
+    for (const key in elementWatchers) {
+      const watcher = elementWatchers[key];
+      watcher.iframe?.contentWindow.postMessage(
+        {
+          type: "PARENT_WINDOW_RESULT",
+          result: data[watcher.selector],
+          id: watcher.queryId,
+          pageName: watcher.pageName,
+        },
+        "*"
+      );
     }
-  }
+  }, [data, elementWatchers]);
 
-  componentDidMount() {
-    this.startListening()
-    this.startWatchers()
-  }
-
-  startListening = () => {
-    if (this.iframe) {
-      window.addEventListener("message", (e) => this.handle(e))
-    }
-  }
-
-  startWatchers = () => {
-    var watcherKeys = Object.keys(this.state.elementWatchers)
-
-    for (var i = 0; i < watcherKeys.length; i++) {
-      var key = watcherKeys[i]
-      var watcher = this.state.elementWatchers[key]
-      var selector = watcher.selector
-      const value = this.dataFromSelector(selector)
-      if (value !== watcher.prevValue) {
-        watcher.prevValue = value
-        watcher.iframe.contentWindow.postMessage(
-          {
-            type: "PARENT_WINDOW_RESULT",
-            result: value,
-            id: watcher.queryId,
-            pageName: watcher.pageName,
-          },
-          "*"
-        )
+  useEffect(() => {
+    const handler = (event) => {
+      if (!embeddedIframe?.current?.contentWindow) return;
+      if (event.data.type === "PARENT_WINDOW_QUERY") {
+        createOrReplaceWatcher(
+          event.data.selector,
+          event.data.pageName,
+          event.data.id
+        );
+        postMessageForSelector("PARENT_WINDOW_RESULT", event.data);
       }
-    }
+    };
 
-    setTimeout(this.startWatchers, 100)
-  }
+    window.addEventListener("message", handler);
 
-  createOrReplaceWatcher = (selector, pageName, queryId) => {
-    var watcherId = pageName + "-" + queryId
-    var watchers = { ...this.state.elementWatchers }
+    // clean up
+    return () => window.removeEventListener("message", handler);
+  }, []);
 
-    watchers[watcherId] = {
-      iframe: this.iframe,
+  const createOrReplaceWatcher = (selector, pageName, queryId) => {
+    const watcherId = pageName + "-" + queryId;
+    const updatedState = elementWatchers;
+
+    updatedState[watcherId] = {
+      iframe: embeddedIframe.current,
       selector: selector,
       pageName: pageName,
       queryId: queryId,
-      prevValue: null,
-    }
+    };
 
-    this.setState({ elementWatchers: watchers })
-  }
+    setElementWatchers(updatedState);
+  };
 
-  dataFromSelector = (selector) => {
-    // Two places the app might be asking for data:
-    //  1. The textContent of an HTML element.
-    //  2. From data passed into this component
-    const matchingInjectedData = this.state.parentData[selector]
-    const nodeData = document.querySelector(selector)?.textContent
-    return matchingInjectedData || nodeData || null
-  }
-
-  postMessageForSelector = (messageType, eventData) => {
-    const maybeData = this.dataFromSelector(eventData.selector)
+  const postMessageForSelector = (messageType, eventData) => {
+    const maybeData = data[eventData.selector];
 
     if (maybeData) {
-      this.iframe.contentWindow.postMessage(
+      embeddedIframe.current.contentWindow.postMessage(
         {
           type: messageType,
           result: maybeData,
@@ -86,44 +64,24 @@ class Retool extends React.Component {
           pageName: eventData.pageName,
         },
         "*"
-      )
+      );
     } else {
       console.log(
         `Not sending data back to Retool, nothing found for selector: ${eventData.selector}`
-      )
+      );
     }
-  }
+  };
 
-  handle = (event) => {
-    if (!this.iframe?.contentWindow) return
-    if (event.data.type === "PARENT_WINDOW_QUERY") {
-      this.createOrReplaceWatcher(
-        event.data.selector,
-        event.data.pageName,
-        event.data.id
-      )
-      this.postMessageForSelector("PARENT_WINDOW_RESULT", event.data)
-    }
+  return (
+    <iframe
+      height="100%"
+      width="100%"
+      frameBorder="none"
+      src={url}
+      ref={embeddedIframe}
+      title="retool"
+    ></iframe>
+  );
+};
 
-    if (event.data.type === "PARENT_WINDOW_PREVIEW_QUERY") {
-      this.postMessageForSelector("PARENT_WINDOW_PREVIEW_RESULT", event.data)
-    }
-  }
-
-  render() {
-    return (
-      <iframe
-        height="100%"
-        width="100%"
-        frameBorder="none"
-        src={this.state.url}
-        ref={(e) => {
-          this.iframe = e
-        }}
-        title="retool"
-      ></iframe>
-    )
-  }
-}
-
-export default Retool
+export default Retool;

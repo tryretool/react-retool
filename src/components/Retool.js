@@ -95,7 +95,7 @@ class Retool extends React.Component {
   }
 
   handle = (event) => {
-    if (!this.iframe.contentWindow) return
+    if (!this.iframe?.contentWindow) return
     if (event.data.type === "PARENT_WINDOW_QUERY") {
       this.createOrReplaceWatcher(
         event.data.selector,

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const Retool = ({ data, url }) => {
+const Retool = ({ data, url, height, width }) => {
   const embeddedIframe = useRef(null);
   const [elementWatchers, setElementWatchers] = useState({});
 
@@ -34,7 +34,6 @@ const Retool = ({ data, url }) => {
 
     window.addEventListener("message", handler);
 
-    // clean up
     return () => window.removeEventListener("message", handler);
   }, []);
 
@@ -74,8 +73,8 @@ const Retool = ({ data, url }) => {
 
   return (
     <iframe
-      height="100%"
-      width="100%"
+      height={height ?? "100%"}
+      width={width ?? "100%"}
       frameBorder="none"
       src={url}
       ref={embeddedIframe}

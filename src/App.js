@@ -3,9 +3,8 @@ import React, { useState, useEffect } from "react";
 
 const App = () => {
   const sample = {
-    name: "value",
-    example2: 19999,
-    example3: { hello: "world" },
+    example1: "",
+    example2: false,
     input: "",
   };
 
@@ -25,27 +24,31 @@ const App = () => {
   const [data, setData] = useState(sample);
   return (
     <div>
+      <h1> React-Retool</h1>
       <button
         onClick={() => {
-          setData({ ...data, example2: "new value" });
+          setData({ ...data, example2: !data.example2 });
         }}
       >
-        This is button
+        Click me!
       </button>
+      <br />
+      <br />
+      <label> Share something: </label>
       <input
         type="text"
         value={data.input}
         onChange={(e) => setData({ ...data, input: e.target.value })}
       />
-      <p id="hello"> Hey123 </p>
-      <h1> {retoolData} </h1>
-      <p id="hello"> {JSON.stringify(data)} </p>
+      <br />
+      <br />
       <Retool
         url="https://support.retool.com/embedded/public/cb9e15f0-5d7c-43a7-a746-cdec870dde9a"
         data={data}
-        height="500px"
-        width="500px"
+        height="700px"
+        width="1000px"
       ></Retool>
+      <h1> {retoolData} </h1>
     </div>
   );
 };

@@ -4,6 +4,7 @@ const Retool = ({ data, url, height, width }) => {
   const embeddedIframe = useRef(null);
   const [elementWatchers, setElementWatchers] = useState({});
 
+  /* Retool passes up the list of elements to watch on page load  */
   useEffect(() => {
     for (const key in elementWatchers) {
       const watcher = elementWatchers[key];
@@ -19,7 +20,9 @@ const Retool = ({ data, url, height, width }) => {
     }
   }, [data, elementWatchers]);
 
+  /* On page load, add event listener to listen for events from Retool */
   useEffect(() => {
+    /* Handle events - if PWQ then create/replace watchers -> return result */
     const handler = (event) => {
       if (!embeddedIframe?.current?.contentWindow) return;
       if (event.data.type === "PARENT_WINDOW_QUERY") {
@@ -37,6 +40,7 @@ const Retool = ({ data, url, height, width }) => {
     return () => window.removeEventListener("message", handler);
   }, []);
 
+  /* Creates or updates the list of values for us to watch for changes */
   const createOrReplaceWatcher = (selector, pageName, queryId) => {
     const watcherId = pageName + "-" + queryId;
     const updatedState = elementWatchers;
@@ -51,6 +55,7 @@ const Retool = ({ data, url, height, width }) => {
     setElementWatchers(updatedState);
   };
 
+  /* Checks for selectors for data and posts message for Retool to read */
   const postMessageForSelector = (messageType, eventData) => {
     const maybeData = data[eventData.selector];
 

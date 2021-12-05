@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Retool = ({ data, url, height, width }) => {
   const embeddedIframe = useRef(null);

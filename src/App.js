@@ -10,7 +10,10 @@ const App = () => {
 
   useEffect(() => {
     const handler = (event) => {
-      if (event.data?.type !== "PARENT_WINDOW_QUERY") {
+      if (
+        event.origin === "https://support.retool.com" &&
+        event.data?.type !== "PARENT_WINDOW_QUERY"
+      ) {
         setRetoolData(event.data);
       }
     };

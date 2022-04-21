@@ -36,6 +36,10 @@ export default App;
 
 `<Retool>` will accept an optional `data` object, which is made available to the embedded application. When an embedded Retool application runs a Parent Window Query, `<Retool>` will check if `data` contains a key matching the Parent Window Query's selector, and if so, return that value to the query.
 
+`<Retool>` will accept optional `height` and `width` props which will be used for the dimensions of the embedded window.
+
+`<Retool>` will accept an optional `onData` callback that will be called with the data of an event that is sent from the embedded Retool app. These events can be sent from a JavaScript query inside of Retool by using the `parent.postMessage()` syntax.
+
 ### Example
 
 Running `yarn start` will start an application with a basic Retool app embeded.

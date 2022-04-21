@@ -1,5 +1,5 @@
 import Retool from "./components/Retool";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const App = () => {
   const sample = {
@@ -7,21 +7,6 @@ const App = () => {
     example2: false,
     input: "",
   };
-
-  useEffect(() => {
-    const handler = (event) => {
-      if (
-        event.origin === "https://support.retool.com" &&
-        event.data?.type !== "PARENT_WINDOW_QUERY"
-      ) {
-        setRetoolData(event.data);
-      }
-    };
-
-    window.addEventListener("message", handler);
-
-    return () => window.removeEventListener("message", handler);
-  }, []);
 
   const [retoolData, setRetoolData] = useState("");
   const [data, setData] = useState(sample);
@@ -50,8 +35,9 @@ const App = () => {
         data={data}
         height="700px"
         width="1000px"
+        onData={setRetoolData}
       ></Retool>
-      <h1> {retoolData} </h1>
+      <h1> {JSON.stringify(retoolData)} </h1>
     </div>
   );
 };

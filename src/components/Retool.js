@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const Retool = ({ data, url, height, width }) => {
+const Retool = ({ data, url, height, width, onData }) => {
   const embeddedIframe = useRef(null);
   const [elementWatchers, setElementWatchers] = useState({});
 
@@ -25,6 +25,15 @@ const Retool = ({ data, url, height, width }) => {
     /* Handle events - if PWQ then create/replace watchers -> return result */
     const handler = (event) => {
       if (!embeddedIframe?.current?.contentWindow) return;
+      
+      if (
+        event.origin === new URL(url).origin &&
+        event.data?.type !== "PARENT_WINDOW_QUERY" &&
+        event.data?.type !== 'intercom-snippet__ready'
+      ) {
+        onData(event.data);
+      }
+      
       if (event.data.type === "PARENT_WINDOW_QUERY") {
         createOrReplaceWatcher(
           event.data.selector,

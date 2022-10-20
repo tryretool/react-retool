@@ -31,7 +31,7 @@ const Retool = ({ data, url, height, width, onData }) => {
         event.data?.type !== "PARENT_WINDOW_QUERY" &&
         event.data?.type !== 'intercom-snippet__ready'
       ) {
-        onData(event.data);
+        onData?.(event.data);
       }
       
       if (event.data.type === "PARENT_WINDOW_QUERY") {

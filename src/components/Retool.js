@@ -1,8 +1,64 @@
 import { useEffect, useRef, useState } from "react";
 
-const Retool = ({ data, url, height, width, onData }) => {
+const IFramePermissionKeys = set(['downloads', 'forms', 'modals', 'popups', 'fullscreen', 'camera', 'microphone', 'geolocation', 'payment', 'topNavigation', 'sameOrigin'])
+
+const constructPermissionStrings = (permissions) => {
+  if (!permissions || permissions.length === 0) {
+    return { allowString: undefined, sandboxString: undefined }
+  }
+
+  const allowArray = []
+  const sandboxArray = []
+
+  permissions.filter(permission => IFramePermissionKeys.has(permission)).forEach(permission => {
+    switch (permission) {
+      case 'downloads':
+        sandboxArray.push('allow-downloads')
+        break
+      case 'forms':
+        sandboxArray.push('allow-forms')
+        break
+      case 'modals':
+        sandboxArray.push('allow-modals')
+        break
+      case 'popups':
+        sandboxArray.push('allow-popups', 'allow-popups-to-escape-sandbox')
+        break
+      case 'fullscreen':
+        allowArray.push('fullscreen')
+        break
+      case 'camera':
+        allowArray.push('camera')
+        break
+      case 'microphone':
+        allowArray.push('microphone')
+        break
+      case 'geolocation':
+        allowArray.push('geolocation')
+        break
+      case 'payment':
+        allowArray.push('payment')
+        break
+      case 'topNavigation':
+        sandboxArray.push('allow-top-navigation', 'allow-top-navigation-by-user-activation')
+        break
+      case 'sameOrigin':
+        sandboxArray.push('allow-same-origin')
+        break
+    }
+  })
+
+  const allowString = allowArray.length > 0 ? allowArray.join(';') : undefined
+  const sandboxString = sandboxArray.length > 0 ? sandboxArray.join(' ') : undefined
+
+  return { allowString, sandboxString }
+}
+
+const Retool = ({ data, url, height, width, onData, permissions }) => {
   const embeddedIframe = useRef(null);
   const [elementWatchers, setElementWatchers] = useState({});
+
+  const { allowString, sandboxString } = constructPermissionStrings(permissions)
 
   /* Retool passes up the list of elements to watch on page load  */
   useEffect(() => {
@@ -87,6 +143,8 @@ const Retool = ({ data, url, height, width, onData }) => {
 
   return (
     <iframe
+      allow={allowString}
+      sandbox={sandboxString}
       height={height ?? "100%"}
       width={width ?? "100%"}
       frameBorder="none"

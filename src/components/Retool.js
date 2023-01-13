@@ -22,18 +22,23 @@ const Retool = ({ data, url, height, width, onData }) => {
 
   /* On page load, add event listener to listen for events from Retool */
   useEffect(() => {
+    // if the URL changes, we want to clear previous set of Element Watchers
+    setElementWatchers({});
+
     /* Handle events - if PWQ then create/replace watchers -> return result */
     const handler = (event) => {
       if (!embeddedIframe?.current?.contentWindow) return;
-      
+
+      /* Handle messages passed up from Retool */
       if (
         event.origin === new URL(url).origin &&
         event.data?.type !== "PARENT_WINDOW_QUERY" &&
-        event.data?.type !== 'intercom-snippet__ready'
+        event.data?.type !== "intercom-snippet__ready"
       ) {
         onData?.(event.data);
       }
-      
+
+      /* Handle requests from Retool looking for data */
       if (event.data.type === "PARENT_WINDOW_QUERY") {
         createOrReplaceWatcher(
           event.data.selector,
@@ -47,7 +52,7 @@ const Retool = ({ data, url, height, width, onData }) => {
     window.addEventListener("message", handler);
 
     return () => window.removeEventListener("message", handler);
-  }, []);
+  }, [url]);
 
   /* Creates or updates the list of values for us to watch for changes */
   const createOrReplaceWatcher = (selector, pageName, queryId) => {

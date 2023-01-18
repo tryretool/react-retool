@@ -31,12 +31,13 @@ const App = () => {
       <br />
       <br />
       <Retool
-        url="https://support.retool.com/embedded/public/cb9e15f0-5d7c-43a7-a746-cdec870dde9a"
+        url="https://retoolin.tryretool.com/embedded/public/9e6c7390-922d-41bd-b038-2e9c0476867c"
         data={data}
         height="700px"
         width="1000px"
         onData={setRetoolData}
-      ></Retool>
+        sandbox 
+      />
       <h1> {JSON.stringify(retoolData)} </h1>
     </div>
   );

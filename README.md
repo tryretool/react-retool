@@ -20,7 +20,7 @@ import Retool from 'react-retool';
 function App() {
   const sample = { name: 'Sample data' }
   return (
-    <Retool 
+    <Retool
       url="https://retoolin.tryretool.com/embedded/public/f7607e1f-670a-4ebf-9a09-be54cf17181e"
       data={sample}
     />
@@ -39,6 +39,8 @@ export default App;
 `<Retool>` will accept optional `height` and `width` props which will be used for the dimensions of the embedded window.
 
 `<Retool>` will accept an optional `onData` callback that will be called with the data of an event that is sent from the embedded Retool app. These events can be sent from a JavaScript query inside of Retool by using the `parent.postMessage()` syntax.
+
+`<Retool>` also accepts optional `allow` and `sandbox` parameters to configure permissions of the iframe used to embed the Retool app. `allow-scripts` and `allow-same-origin` are required in order to run Retool, so if `sandbox` is specified, `allow-scripts` and `allow-same-origin` will always be appended to ensure the Retool app works.
 
 ### Example
 

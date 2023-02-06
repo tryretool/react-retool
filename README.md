@@ -42,6 +42,8 @@ export default App;
 
 `<Retool>` also accepts optional `allow` and `sandbox` parameters to configure permissions of the iframe used to embed the Retool app. `allow-scripts` and `allow-same-origin` are required in order to run Retool, so if `sandbox` is specified, `allow-scripts` and `allow-same-origin` will always be appended to ensure the Retool app works.
 
+`<Retool>` will accept an optional `styling` prop object that can be used to pass in styles to the iframe component.
+
 ### Example
 
 Running `yarn start` will start an application with a basic Retool app embeded.

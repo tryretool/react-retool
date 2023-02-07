@@ -67,6 +67,10 @@ You will also see any lint errors in the console.
 3. Navigate to `/dst` directory.
 4. Publish to npm with `npm publish`
 
+## Testing
+
+Tests exist in the `/src/__tests__` directory. Running `yarn test` will run the test suite.
+
 ## Support
 
 Need help? Please report issues or requests to support@retool.com, through in app chat, or on https://community.retool.com/

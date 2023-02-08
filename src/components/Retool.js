@@ -1,8 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 
-const MINIMUM_SANDBOX_PERMISSIONS = 'allow-scripts allow-same-origin'
+const MINIMUM_SANDBOX_PERMISSIONS = "allow-scripts allow-same-origin";
 
-const Retool = ({ data, url, height, width, onData, sandbox, allow }) => {
+const Retool = ({
+  data,
+  url,
+  height,
+  width,
+  onData,
+  sandbox,
+  allow,
+  styling,
+}) => {
   const embeddedIframe = useRef(null);
   const [elementWatchers, setElementWatchers] = useState({});
 
@@ -92,7 +101,12 @@ const Retool = ({ data, url, height, width, onData, sandbox, allow }) => {
     }
   };
 
-  const sandboxAttrib = typeof sandbox === 'string' ? `${MINIMUM_SANDBOX_PERMISSIONS} ${sandbox}` : sandbox === true ? MINIMUM_SANDBOX_PERMISSIONS : sandbox
+  const sandboxAttrib =
+    typeof sandbox === "string"
+      ? `${MINIMUM_SANDBOX_PERMISSIONS} ${sandbox}`
+      : sandbox === true
+      ? MINIMUM_SANDBOX_PERMISSIONS
+      : sandbox;
 
   return (
     <iframe
@@ -104,6 +118,7 @@ const Retool = ({ data, url, height, width, onData, sandbox, allow }) => {
       src={url}
       ref={embeddedIframe}
       title="retool"
+      style={styling}
     />
   );
 };

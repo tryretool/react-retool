@@ -2,6 +2,10 @@ import Retool from "./components/Retool";
 import { useState } from "react";
 
 const App = () => {
+  const iframeStyle = {
+    border: "2px solid red",
+  };
+
   const sample = {
     example1: "",
     example2: false,
@@ -36,6 +40,7 @@ const App = () => {
         height="700px"
         width="1000px"
         onData={setRetoolData}
+        styling={iframeStyle}
       ></Retool>
       <h1> {JSON.stringify(retoolData)} </h1>
     </div>

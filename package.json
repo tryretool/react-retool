@@ -12,6 +12,9 @@
       "url": "https://github.com/tryretool/react-retool/blob/main/LICENSE"
     }
   ],
+  "types": "Retool.d.ts",
+  "main": "Retool.js",
+  "type": "commonjs",
   "keywords": [
     "react",
     "react-component",
@@ -37,14 +40,20 @@
   },
   "peerDependencies": {
     "react": ">=17.0.0",
-    "react-dom": ">=17.0.0"
+    "react-dom": ">=17.0.0",
+    "@types/react": ">=17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "publish:npm": "rm -rf dst && mkdir dst && babel src/components -d dst --copy-files && mv ./dst/Retool.js ./dst/index.js && cp ./package.json ./dst/package.json && cp ./README.md ./dst/README.md"
+    "publish:npm": "babel src/components --copy-files --extensions .js,.jsx -d dst --source-maps && cp ./package.json ./dst/package.json && cp ./README.md ./dst/README.md"
   },
   "eslintConfig": {
     "extends": [

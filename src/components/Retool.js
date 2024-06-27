@@ -84,7 +84,7 @@ const Retool = ({
   const postMessageForSelector = (messageType, eventData) => {
     const maybeData = data[eventData.selector];
 
-    if (maybeData) {
+    if (maybeData !== undefined) {
       embeddedIframe.current.contentWindow.postMessage(
         {
           type: messageType,
